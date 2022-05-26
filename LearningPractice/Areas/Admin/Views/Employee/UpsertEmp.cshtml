@@ -1,0 +1,57 @@
+﻿
+@model Learning1.Models.ViewModel.EmployyeVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Employee Form</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" asp-action="UpsertEmp" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Employye.EmployeeId" />
+            <div class="form-group">
+                <label asp-for="Employye.FullName" class="control-label"></label>
+                <input asp-for="Employye.FullName" class="form-control" />
+                <span asp-validation-for="Employye.FullName" class="text-danger"></span>
+            </div>
+               <div class="form-group">
+                <label asp-for="Employye.EmpCode" class="control-label"></label>
+                <input asp-for="Employye.EmpCode" class="form-control" />
+                <span asp-validation-for="Employye.EmpCode" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Employye.OfficeLocation" class="control-label"></label>
+                <input asp-for="Employye.OfficeLocation" class="form-control" />
+                <span asp-validation-for="Employye.OfficeLocation" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">
+                <label asp-for="Employye.DesignationId" class="control-label"></label>
+                <select asp-for="Employye.DesignationId" asp-items="@Model.DesignationList" class="form-control" >
+                    <option disabled selected>-- Select Designation __</option>
+                </select>
+                
+            </div>
+           
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+                </div>
+                <div  class="form-group col-md-6">
+                    <a asp-action="Index"  class="btn btn-secondary btn-block"><i class="fa fa-table"></i> Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
