@@ -21,11 +21,14 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"))
 builder.Services.AddScoped<IUnitOfWork, UnitOfWorkRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.Configure<IdentityOptions>(options =>
-{
-   options.SignIn.RequireConfirmedAccount = false;
-    
-             });
+builder.Services.Configure<IdentityOptions>(opts => {
+    opts.Password.RequiredLength = 3;
+    opts.Password.RequireNonAlphanumeric = false;
+    opts.Password.RequireLowercase = false;
+    opts.Password.RequireUppercase = false;
+    opts.Password.RequireDigit = false;
+    opts.Password.RequiredUniqueChars = 0;
+});
 
 var app = builder.Build();
 
@@ -47,6 +50,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Account}/{controller=Account}/{action=Login}/{id?}");
+    pattern: "{area=Employee}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

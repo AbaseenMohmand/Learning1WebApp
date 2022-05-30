@@ -1,7 +1,8 @@
 ﻿using Learning1.DataAccess.Data;
-using Learning1.DataAccess.Utility;
+
 using Learning1.Models;
 using Learning1.Models.ViewModel;
+using Learning1.Utility.HelperMethods;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,15 +64,17 @@ namespace LearningPractice.Areas.Account.Controllers
                     Email = model.Email,
                     Name = model.Name,
                 };
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user,model.Password);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, model.RoleName);
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    
+                        return RedirectToAction("Login", "Account");
+
+
                 }
             }
-            return RedirectToAction("Login", "Account");
+            return View(model);
         }
     }
 }
