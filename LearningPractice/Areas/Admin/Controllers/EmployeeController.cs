@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LearningPractice.Areas.Admin.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

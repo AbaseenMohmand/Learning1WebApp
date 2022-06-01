@@ -29,6 +29,10 @@ builder.Services.Configure<IdentityOptions>(opts => {
     opts.Password.RequireDigit = false;
     opts.Password.RequiredUniqueChars = 0;
 });
+builder.Services.ConfigureApplicationCookie(options=>
+options.LoginPath = $"/Account/Account/Register"
+
+);
 
 var app = builder.Build();
 
@@ -44,12 +48,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Employee}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Account}/{controller=Account}/{action=Register}/{id?}");
 
 app.Run();

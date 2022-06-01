@@ -34,7 +34,7 @@ namespace LearningPractice.Areas.Account.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Employee/Home/Index");
+                    return RedirectToAction(actionName:"Index", controllerName:"Employee", new {area = "Admin" });
                 }
                 ModelState.AddModelError("", "An invalid Attempt");
 
@@ -70,11 +70,21 @@ namespace LearningPractice.Areas.Account.Controllers
                     await _userManager.AddToRoleAsync(user, model.RoleName);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                         return RedirectToAction("Login", "Account");
+                }
 
-
+                foreach(var errors in result.Errors)
+                {
+                    ModelState.AddModelError("", errors.Description);
                 }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(actionName: "Login", controllerName: "Account", new { area = "Account" });
         }
     }
 }

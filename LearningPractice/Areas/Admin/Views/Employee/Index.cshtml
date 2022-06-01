@@ -34,10 +34,13 @@
                <th>
                 @Html.DisplayNameFor(model => model.Designation)
             </th>
-          
-            <th>
+            @if (User.IsInRole(Learning1.Utility.HelperMethods.Helpers.Admin))
+            {
+                  <th>
                 <a asp-action="UpsertEmp" class="btn btn-outline-success"><i class="far fa-plus-square"></i> Employee</a>
             </th>
+            }
+
         </tr>
     </thead>
     <tbody>
