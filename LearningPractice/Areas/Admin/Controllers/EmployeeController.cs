@@ -20,11 +20,27 @@ namespace LearningPractice.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
         }
-        public IActionResult Index(string sortBy)
+        public IActionResult Index(string sortBy, string searchString,string currentFilter, int? pageNumber)
         {
             ViewBag.SortNameParam = string.IsNullOrEmpty(sortBy) ? "FullName desc" : "";
+            ViewData["CurrentFilter"] = searchString;
             var GetAllEmp =  _employeeRepository.GetEmployeesWithDesignations();
 
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                GetAllEmp = _employeeRepository.GetEmployeesWithDesignations().Where(x=>x.FullName.Contains(searchString)).ToList();
+            }
 
             switch (sortBy)
             {
@@ -36,7 +52,12 @@ namespace LearningPractice.Areas.Admin.Controllers
                     GetAllEmp = (GetAllEmp.OrderBy(x => x.FullName));
                     break;
             }
-            return View(GetAllEmp);
+
+            int pageSize = 3;
+
+            return View(Learning1.Utility.HelperMethods.PaginatedList<Employye>.CreateAsync(GetAllEmp, pageNumber?? 1,pageSize));
+            
+            
         }
 
         [HttpGet]
